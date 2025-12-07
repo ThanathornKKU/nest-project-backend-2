@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # -----------------------------
+  # MongoDB (optional)
+  # -----------------------------
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASS}
+    ports:
+      - '27019:27017'
+    volumes:
+      - mongo-data:/data/db
+
+  # -----------------------------
+  # Kafka placeholder (ไม่สร้าง Kafka ใหม่)
+  # -----------------------------
+  kafka:
+    image: alpine
+    container_name: kafka-placeholder
+    command: ["sh", "-c", "sleep infinity"]
+
+  # -----------------------------
+  # Consumer (NestJS)
+  # -----------------------------
+  consumer:
+    image: node:18-alpine
+    container_name: consumer
+    working_dir: /app
+    command: sh -c "npm install && npm run start:dev"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - kafka
+    ports:
+      - "3002:3002"
+
+volumes:
+  mongo-data:
+    driver: local
