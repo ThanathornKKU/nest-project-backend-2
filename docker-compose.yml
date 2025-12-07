@@ -6,6 +6,7 @@ services:
   # -----------------------------
   mongo:
     image: mongo
+    container_name: mongo-nest-project-2
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
@@ -18,10 +19,10 @@ services:
   # -----------------------------
   # Kafka placeholder (ไม่สร้าง Kafka ใหม่)
   # -----------------------------
-  kafka:
-    image: alpine
-    container_name: kafka-placeholder
-    command: ["sh", "-c", "sleep infinity"]
+  # kafka:
+  #   image: alpine
+  #   container_name: kafka-placeholder
+  #   command: ["sh", "-c", "sleep infinity"]
 
   # -----------------------------
   # Consumer (NestJS)
@@ -30,16 +31,18 @@ services:
     image: node:18-alpine
     container_name: consumer
     working_dir: /app
-    command: sh -c "npm install && npm run start:dev"
+    # command: sh -c "npm install && npm run start:dev"
+    # ติดตั้ง pnpm แล้วรัน
+    command: sh -c "corepack enable && pnpm install && pnpm run start:dev"
     volumes:
       - ./:/app
       - /app/node_modules
     env_file:
       - .env
-    depends_on:
-      - kafka
     ports:
       - "3002:3002"
+    # depends_on:
+    #   - kafka
 
 volumes:
   mongo-data:

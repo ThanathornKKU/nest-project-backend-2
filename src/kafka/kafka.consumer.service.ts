@@ -47,7 +47,7 @@ export class KafkaConsumerService implements OnModuleInit {
 
     console.log(`🔥[Kafka] Subscribed to topic: ${this.topic}`);
     
-    // begin consuming messages
+    // begin consuming messages 
     await this.consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
         if (!message.value) return;
