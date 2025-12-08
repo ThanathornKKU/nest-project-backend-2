@@ -27,22 +27,35 @@ services:
   # -----------------------------
   # Consumer (NestJS)
   # -----------------------------
-  consumer:
-    image: node:18-alpine
-    container_name: consumer
-    working_dir: /app
-    # command: sh -c "npm install && npm run start:dev"
-    # ติดตั้ง pnpm แล้วรัน
-    command: sh -c "corepack enable && pnpm install && pnpm run start:dev"
-    volumes:
-      - ./:/app
-      - /app/node_modules
-    env_file:
-      - .env
-    ports:
-      - "3002:3002"
-    # depends_on:
-    #   - kafka
+  # consumer:
+  #   image: node:18-alpine
+  #   container_name: consumer
+  #   working_dir: /app
+  #   # command: sh -c "npm install && npm run start:dev"
+  #   # ติดตั้ง pnpm แล้วรัน
+  #   command: sh -c "corepack enable && pnpm install && pnpm run start:dev"
+  #   volumes:
+  #     - ./:/app
+  #     - /app/node_modules
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "3002:3002"
+  #   # depends_on:
+  #   #   - kafka
+
+  # consumer:
+  #   image: node:18-alpine
+  #   container_name: consumer
+  #   working_dir: /app
+  #   command: sh -c "corepack enable && pnpm install --store /pnpm-store && pnpm run start:dev"
+  #   volumes:
+  #     - ./:/app
+  #     - pnpm-store:/pnpm-store   # ใช้ volume แยกสำหรับ pnpm store
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "3002:3002"
 
 volumes:
   mongo-data:
